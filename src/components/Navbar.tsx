@@ -1,4 +1,4 @@
-import { ChevronDown, Feather, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { audiences, services, steps } from '../content'
 import { EMAIL, WHATSAPP } from '../contact'
@@ -36,7 +36,6 @@ export default function Navbar() {
         style={{ animationDelay: '0.1s', opacity: 0 }}
       >
         <a href="/" className={`flex items-center gap-2 ${focusClass}`}>
-          <Feather className="h-5 w-5 text-[#1f1a24]" aria-hidden="true" />
           <span className="text-lg font-semibold tracking-tight text-[#1f1a24]">Trackerflow</span>
         </a>
 

@@ -1,4 +1,4 @@
-import { ArrowRight, Code2, Globe, Phone, Workflow } from 'lucide-react'
+import { ArrowRight, Phone } from 'lucide-react'
 import Navbar from './components/Navbar'
 import { services } from './content'
 import { PHONE, PHONE_HREF, WHATSAPP } from './contact'
@@ -6,11 +6,6 @@ import { useReducedMotion } from './useReducedMotion'
 
 const fade = (delay: string) => ({ animationDelay: delay, opacity: 0 })
 const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2a1f33]'
-const badges = [
-  { Icon: Globe, bg: 'from-[#e9c8b5] to-[#c98f7a]' },
-  { Icon: Code2, bg: 'from-[#cdbfe3] to-[#8f7bb8]' },
-  { Icon: Workflow, bg: 'from-[#f1d9a8] to-[#d9a35f]' },
-]
 const gradientText =
   'animate-gradient-drift bg-linear-to-r from-[#2a1f33] via-[#8a5a8c] to-[#d98b5f] bg-[length:200%_100%] bg-clip-text text-transparent'
 
@@ -37,21 +32,7 @@ export default function App() {
 
       <Navbar />
 
-      <main className="relative z-20 mx-auto max-w-7xl px-4 pt-6 pb-16 text-center sm:px-6 sm:pt-12 sm:pb-32">
-        <div
-          className="animate-fade-in-up mb-5 inline-flex items-center gap-2.5 rounded-full border border-[#e6dccf] bg-white/60 py-1 pr-3.5 pl-1.5 backdrop-blur-sm sm:mb-8"
-          style={fade('0.2s')}
-        >
-          <span className="flex -space-x-2" aria-hidden="true">
-            {badges.map(({ Icon, bg }) => (
-              <span key={bg} className={`flex h-6 w-6 items-center justify-center rounded-full bg-linear-to-br ring-2 ring-[#faf7f2] ${bg}`}>
-                <Icon className="h-3 w-3 text-white" strokeWidth={2.5} />
-              </span>
-            ))}
-          </span>
-          <span className="text-xs font-medium text-[#3d3444] sm:text-sm">Estudio de desarrollo web y software · Chile</span>
-        </div>
-
+      <main className="relative z-20 mx-auto max-w-7xl px-4 pt-14 pb-16 text-center sm:px-6 sm:pt-24 sm:pb-32">
         <h1
           className="animate-fade-in-up mb-4 text-[38px] leading-[1.04] font-bold tracking-[-0.035em] text-[#1f1a24] sm:mb-5 sm:text-6xl md:text-7xl lg:text-[84px]"
           style={fade('0.3s')}
