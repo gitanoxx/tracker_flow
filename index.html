@@ -6,7 +6,8 @@
 <meta name="theme-color" content="#04060f" />
 <title>Trackerflow — Desarrollo web y software a medida</title>
 <meta name="description" content="Trackerflow es un estudio de desarrollo web y software en Chile: sitios web, software a medida, automatización e integraciones para emprendimientos y pymes." />
-<link rel="icon" type="image/png" href="/assets/trackerflow-icon.png" />
+<link rel="icon" type="image/png" href="/assets/trackerflow-favicon.png" />
+<link rel="apple-touch-icon" href="/assets/trackerflow-apple-touch.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap" rel="stylesheet" />
@@ -57,8 +58,10 @@ svg.i-arrow{stroke-width:2}
 
 /* hero */
 .hero{min-height:100vh;display:flex;flex-direction:column;background:radial-gradient(125% 62% at 50% -10%, rgba(4,6,15,.82) 0%, rgba(4,6,15,.28) 44%, transparent 68%)}
-.nav{width:100%;max-width:var(--maxw);margin:0 auto;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.brand{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:19px;letter-spacing:.16em}
+/* z-index: .hero-inner is shifted up with a transform and would otherwise sit on top of the nav and swallow its clicks */
+.nav{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:inline-flex;align-items:center}
+.brand img{display:block;height:34px;width:auto}
 .nav-links{display:flex;gap:30px;font-size:14.5px;color:var(--muted)}
 .nav-links a{transition:color .2s ease}
 .nav-links a:hover{color:var(--ink)}
@@ -84,37 +87,56 @@ svg.i-arrow{stroke-width:2}
 .card p{margin-top:10px;font-size:15px;line-height:1.6;color:var(--muted)}
 
 /* showcase */
-.showcase-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(36px,6vw,72px);align-items:center}
+.showcase-copy{max-width:680px;margin:0 auto;text-align:center}
 .showcase-copy p{margin-top:18px;color:var(--muted);font-size:18px;line-height:1.65;text-shadow:0 1px 24px rgba(0,0,0,.55)}
-.steps{list-style:none;margin-top:26px;display:grid;gap:14px}
+.steps{list-style:none;margin:26px auto 0;max-width:480px;text-align:left;display:grid;gap:14px}
 .steps li{font-size:15px;line-height:1.55;color:var(--muted)}
 .steps strong{display:block;color:var(--ink);font-weight:700;margin-bottom:2px}
 .showcase-copy .btn{margin-top:32px}
-.dashboard{position:relative;padding:24px;border-radius:var(--radius-lg);background:var(--glass-2);border:1px solid var(--line-strong);box-shadow:var(--shadow);backdrop-filter:blur(18px)}
-.dashboard::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(160deg, rgba(93,240,168,.35), transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.dash-top{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:15px;margin-bottom:18px}
-.dash-live{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--accent)}
-.dash-live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
-.dash-bars{display:flex;align-items:flex-end;gap:10px;height:150px;padding:14px;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:14px}
-.dash-bar{flex:1;height:var(--h);border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--accent),rgba(47,211,138,.25));transform-origin:bottom;transform:scaleY(0)}
-.dashboard.in .dash-bar{animation:grow .9s cubic-bezier(.22,.7,.2,1) both;animation-delay:calc(var(--i)*90ms)}
-@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-.dash-rows{margin-top:20px;display:grid;gap:14px}
-.dash-row{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;font-size:13.5px;color:var(--muted)}
-.dash-track{height:8px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}
-.dash-fill{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
-.dashboard.in .dash-fill{animation:fill 1.1s cubic-bezier(.22,.7,.2,1) .3s both}
-@keyframes fill{from{width:0}to{width:var(--w)}}
 .stats{margin-top:clamp(56px,8vw,96px);display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .stat{text-align:center;padding:30px 18px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px)}
 /* shortcut: labels are words, not numbers, so the stat size is smaller than the spec's clamp(30px,4vw,44px) */
 .stat-value{font-size:clamp(20px,2.2vw,25px);font-weight:800;letter-spacing:-.01em;background:linear-gradient(180deg,#fff,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .stat-label{margin-top:8px;font-size:14px;line-height:1.5;color:var(--muted)}
 
+/* set by the planet loop only when the GPU is still slow at minimum resolution: no blur, more opaque glass to keep text legible */
+.lite-fx{--glass:rgba(12,18,38,.82);--glass-2:rgba(16,24,48,.86)}
+.lite-fx :is(.card,.stat,.cta-card,.btn-outline){backdrop-filter:none}
+
+/* clients */
+/* marquee: two identical groups, each at least as wide as the track, so shifting by one group loops without a seam */
+.marquee{--gap:18px;display:flex;gap:var(--gap);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.marquee-group{list-style:none;flex-shrink:0;min-width:100%;display:flex;justify-content:space-around;gap:var(--gap);animation:marquee 30s linear infinite}
+.marquee:hover .marquee-group,.marquee.is-paused .marquee-group{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(calc(-100% - var(--gap)))}}
+/* no backdrop-filter: the mask makes .marquee a backdrop root, so blur would sample nothing */
+.client{flex:0 0 240px;display:grid;place-items:center;height:128px;padding:24px;border-radius:var(--radius);background:var(--glass-2);border:1px solid var(--line)}
+/* object-fit for <img>; inline <svg> letterboxes the same way via its default preserveAspectRatio */
+.client-logo{display:block;width:100%;height:48px;object-fit:contain}
+.client-logo-tall{height:84px}
+.marquee-toggle{display:grid;place-items:center;width:44px;height:44px;margin:22px auto 0;border-radius:50%;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line-strong);cursor:pointer;transition:color .2s ease,background .2s ease}
+.marquee-toggle:hover{color:var(--ink);background:rgba(255,255,255,.09)}
+.marquee-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.marquee-toggle svg.i{width:18px;height:18px}
+.marquee-toggle .i-play,.marquee-toggle[aria-pressed="true"] .i-pause{display:none}
+.marquee-toggle[aria-pressed="true"] .i-play{display:block}
+
 /* cta + footer */
 .cta-card{text-align:center;max-width:760px;margin:0 auto;padding:clamp(48px,7vw,80px) clamp(28px,5vw,64px);border-radius:var(--radius-lg);background:radial-gradient(120% 140% at 50% 0%, rgba(93,240,168,.12), transparent 55%), var(--glass-2);border:1px solid var(--line-strong);box-shadow:var(--shadow);backdrop-filter:blur(18px)}
 .cta-card p{margin:18px auto 34px;max-width:520px;color:var(--muted);font-size:18px;line-height:1.65}
 .cta-card .hero-actions{margin-top:0}
+.ig-card{display:flex;align-items:center;gap:22px;max-width:760px;margin:20px auto 0;padding:24px 28px;border-radius:var(--radius-lg);background:var(--glass-2);border:1px solid var(--line-strong)}
+.ig-icon{flex:none;display:grid;place-items:center;width:56px;height:56px;border-radius:16px;color:#fff;background:linear-gradient(45deg,#f58529,#dd2a7b 45%,#8134af 75%,#515bd4)}
+.ig-icon svg.i{width:28px;height:28px}
+.ig-copy{flex:1;min-width:0}
+.ig-copy .eyebrow{margin-bottom:4px}
+.ig-copy h3{font-size:20px;font-weight:700}
+.ig-copy p{margin-top:4px;font-size:15px;line-height:1.55;color:var(--muted)}
+/* floating WhatsApp: deeper than brand #25d366 so the white glyph clears 3:1 non-text contrast */
+.wa-float{position:fixed;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));z-index:50;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;color:#fff;background:#1ea952;box-shadow:0 10px 28px -6px rgba(37,211,102,.55),0 4px 12px rgba(0,0,0,.35);transition:transform .2s ease,box-shadow .2s ease}
+.wa-float:hover{transform:translateY(-3px);box-shadow:0 14px 34px -6px rgba(37,211,102,.7),0 4px 12px rgba(0,0,0,.35)}
+.wa-float:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.wa-float svg{width:30px;height:30px;fill:currentColor}
 .footer{display:flex;justify-content:space-between;gap:48px;flex-wrap:wrap;margin-top:clamp(64px,9vw,110px);padding-top:48px;border-top:1px solid var(--line)}
 .footer-brand p{margin-top:12px;max-width:280px;font-size:14px;line-height:1.6;color:var(--muted)}
 .footer-cols{display:flex;gap:clamp(32px,6vw,72px);flex-wrap:wrap}
@@ -125,9 +147,6 @@ svg.i-arrow{stroke-width:2}
 
 /* responsive */
 @media (max-width:980px){
-  .showcase-grid{grid-template-columns:1fr}
-  .showcase-copy{text-align:center}
-  .steps{text-align:left;max-width:480px;margin-left:auto;margin-right:auto}
   .stats{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:720px){
@@ -137,21 +156,29 @@ svg.i-arrow{stroke-width:2}
 }
 @media (max-width:560px){
   .feature-grid{grid-template-columns:1fr}
-  .dash-row{grid-template-columns:90px 1fr}
   .hero-actions{width:100%}
   .hero-actions .btn{flex:1;justify-content:center}
   .cta-card{padding:40px 22px}
+  .ig-card{flex-direction:column;text-align:center;padding:28px 22px}
+  .ig-card .btn{width:100%;justify-content:center}
+  .copyright{padding-bottom:64px} /* room so the floating WhatsApp button never covers the last line */
+  .marquee{--gap:12px}
+  .client{flex-basis:180px;height:100px;padding:16px}
+  .client-logo{height:38px}
+  .client-logo-tall{height:68px}
   .footer{flex-direction:column}
 }
 @media (max-width:380px){
   .stats{grid-template-columns:1fr}
   .logo{font-size:15px}
+  .brand img{height:28px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   [data-reveal]{opacity:1;transform:none;transition:none}
-  .dash-bar,.dashboard.in .dash-bar{transform:none;animation:none}
-  .dash-fill,.dashboard.in .dash-fill{width:var(--w);animation:none}
+  .marquee{-webkit-mask-image:none;mask-image:none}
+  .marquee-group{animation:none;flex-wrap:wrap;justify-content:center}
+  .marquee-group[aria-hidden],.marquee-toggle{display:none}
 }
 </style>
 </head>
@@ -162,7 +189,7 @@ svg.i-arrow{stroke-width:2}
   <!-- SECTION 1 · HERO -->
   <header class="hero">
     <nav class="nav" aria-label="Principal">
-      <a href="#top" class="brand">Trackerflow</a>
+      <a href="#top" class="brand"><img src="/assets/trackerflow-logo.webp" alt="Trackerflow" width="887" height="132"></a>
       <div class="nav-links">
         <a href="#servicios">Servicios</a>
         <a href="#proceso">Cómo trabajamos</a>
@@ -228,40 +255,19 @@ svg.i-arrow{stroke-width:2}
 
   <!-- SECTION 3 · PROCESO + PARA QUIÉN -->
   <section class="section showcase" id="proceso">
-    <div class="showcase-grid">
-      <div class="showcase-copy">
-        <span class="eyebrow" data-reveal>Cómo trabajamos</span>
-        <h2 data-reveal style="--rd:90ms">De la idea al sistema funcionando, paso a paso</h2>
-        <p data-reveal style="--rd:180ms">Una solución acotada, con entregables y tiempos claros, revisada contigo en cada etapa.</p>
-        <ol class="steps" data-reveal style="--rd:220ms">
-          <li><strong>01 · Entendemos</strong>Conversamos sobre tu negocio, la necesidad y el resultado que esperas.</li>
-          <li><strong>02 · Proponemos</strong>Una solución acotada, con entregables y tiempos claros.</li>
-          <li><strong>03 · Construimos</strong>Desarrollamos, revisamos contigo y dejamos todo listo para usar.</li>
-        </ol>
-        <a class="btn btn-primary" data-reveal style="--rd:270ms" href="https://wa.me/56940053245?text=Hola%20Trackerflow%2C%20quiero%20conversar%20sobre%20un%20proyecto" target="_blank" rel="noopener noreferrer">
-          Conversemos tu proyecto
-          <svg class="i i-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
-      </div>
-
-      <div class="dashboard" data-reveal style="--rd:160ms" role="img" aria-label="Ilustración del avance de un proyecto por etapas">
-        <div class="dash-top"><span>Tu proyecto · avance</span><span class="dash-live">En curso</span></div>
-        <div class="dash-bars">
-          <span class="dash-bar" style="--h:62%;--i:0"></span>
-          <span class="dash-bar" style="--h:88%;--i:1"></span>
-          <span class="dash-bar" style="--h:47%;--i:2"></span>
-          <span class="dash-bar" style="--h:95%;--i:3"></span>
-          <span class="dash-bar" style="--h:71%;--i:4"></span>
-          <span class="dash-bar" style="--h:80%;--i:5"></span>
-          <span class="dash-bar" style="--h:58%;--i:6"></span>
-        </div>
-        <div class="dash-rows">
-          <div class="dash-row"><span>Entendemos</span><span class="dash-track"><span class="dash-fill" style="--w:90%"></span></span></div>
-          <div class="dash-row"><span>Proponemos</span><span class="dash-track"><span class="dash-fill" style="--w:72%"></span></span></div>
-          <div class="dash-row"><span>Construimos</span><span class="dash-track"><span class="dash-fill" style="--w:48%"></span></span></div>
-          <div class="dash-row"><span>Lanzamos</span><span class="dash-track"><span class="dash-fill" style="--w:34%"></span></span></div>
-        </div>
-      </div>
+    <div class="showcase-copy">
+      <span class="eyebrow" data-reveal>Cómo trabajamos</span>
+      <h2 data-reveal style="--rd:90ms">De la idea al sistema funcionando, paso a paso</h2>
+      <p data-reveal style="--rd:180ms">Una solución acotada, con entregables y tiempos claros, revisada contigo en cada etapa.</p>
+      <ol class="steps" data-reveal style="--rd:220ms">
+        <li><strong>01 · Entendemos</strong>Conversamos sobre tu negocio, la necesidad y el resultado que esperas.</li>
+        <li><strong>02 · Proponemos</strong>Una solución acotada, con entregables y tiempos claros.</li>
+        <li><strong>03 · Construimos</strong>Desarrollamos, revisamos contigo y dejamos todo listo para usar.</li>
+      </ol>
+      <a class="btn btn-primary" data-reveal style="--rd:270ms" href="https://wa.me/56940053245?text=Hola%20Trackerflow%2C%20quiero%20conversar%20sobre%20un%20proyecto" target="_blank" rel="noopener noreferrer">
+        Conversemos tu proyecto
+        <svg class="i i-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
     </div>
 
     <div class="stats" id="para-quien">
@@ -270,6 +276,51 @@ svg.i-arrow{stroke-width:2}
       <div class="stat" data-reveal style="--rd:160ms"><div class="stat-value">Pequeños negocios</div><div class="stat-label">Para ordenar tu presencia y tus tareas diarias.</div></div>
       <div class="stat" data-reveal style="--rd:240ms"><div class="stat-value">Pymes</div><div class="stat-label">Para procesos más simples y conectados.</div></div>
     </div>
+  </section>
+
+  <!-- SECTION · CLIENTES -->
+  <section class="section clients" id="clientes">
+    <div class="section-head">
+      <span class="eyebrow" data-reveal>Clientes</span>
+      <h2 data-reveal style="--rd:80ms">Confían en nosotros</h2>
+    </div>
+    <div class="marquee" data-reveal style="--rd:120ms">
+      <ul class="marquee-group" aria-label="Empresas clientes">
+        <li class="client">
+          <svg class="client-logo" viewBox="0 0 520 78" role="img" aria-label="Tetris SpA">
+            <rect width="34" height="34" rx="6" fill="#1fb256"/>
+            <rect x="44" width="34" height="34" rx="6" fill="#1fb256"/>
+            <rect x="88" width="34" height="34" rx="6" fill="#1fb256"/>
+            <rect x="44" y="44" width="34" height="34" rx="6" fill="#1a7a43"/>
+            <text x="164" y="64" textLength="216" font-size="60" font-weight="800" fill="#f3f6ff">TETRIS</text>
+            <text x="408" y="64" textLength="104" font-size="60" font-weight="400" fill="#a3b5aa">SpA</text>
+          </svg>
+        </li>
+        <li class="client"><img class="client-logo" src="/assets/clients/autofenix.webp" alt="AutoFenix" width="770" height="160" loading="lazy" decoding="async"></li>
+        <li class="client"><img class="client-logo client-logo-tall" src="/assets/clients/gpsplanet.webp" alt="GPS Planet" width="281" height="264" loading="lazy" decoding="async"></li>
+        <li class="client"><img class="client-logo" src="/assets/clients/hellcars.webp" alt="Hell Cars" width="754" height="160" loading="lazy" decoding="async"></li>
+      </ul>
+      <!-- identical copy so the loop has no seam; hidden from screen readers -->
+      <ul class="marquee-group" aria-hidden="true">
+        <li class="client">
+          <svg class="client-logo" viewBox="0 0 520 78">
+            <rect width="34" height="34" rx="6" fill="#1fb256"/>
+            <rect x="44" width="34" height="34" rx="6" fill="#1fb256"/>
+            <rect x="88" width="34" height="34" rx="6" fill="#1fb256"/>
+            <rect x="44" y="44" width="34" height="34" rx="6" fill="#1a7a43"/>
+            <text x="164" y="64" textLength="216" font-size="60" font-weight="800" fill="#f3f6ff">TETRIS</text>
+            <text x="408" y="64" textLength="104" font-size="60" font-weight="400" fill="#a3b5aa">SpA</text>
+          </svg>
+        </li>
+        <li class="client"><img class="client-logo" src="/assets/clients/autofenix.webp" alt="" width="770" height="160" loading="lazy" decoding="async"></li>
+        <li class="client"><img class="client-logo client-logo-tall" src="/assets/clients/gpsplanet.webp" alt="" width="281" height="264" loading="lazy" decoding="async"></li>
+        <li class="client"><img class="client-logo" src="/assets/clients/hellcars.webp" alt="" width="754" height="160" loading="lazy" decoding="async"></li>
+      </ul>
+    </div>
+    <button class="marquee-toggle" type="button" aria-pressed="false" aria-label="Pausar carrusel de clientes">
+      <svg class="i i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg>
+      <svg class="i i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg>
+    </button>
   </section>
 
   <!-- SECTION 4 · CTA + FOOTER -->
@@ -287,9 +338,24 @@ svg.i-arrow{stroke-width:2}
       </div>
     </div>
 
+    <div class="ig-card" id="instagram" data-reveal style="--rd:120ms">
+      <span class="ig-icon" aria-hidden="true">
+        <svg class="i" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+      </span>
+      <div class="ig-copy">
+        <span class="eyebrow">Instagram</span>
+        <h3>@trackerflow.cl</h3>
+        <p>Síguenos y entérate de nuestras novedades.</p>
+      </div>
+      <a class="btn btn-outline" href="https://www.instagram.com/trackerflow.cl/" target="_blank" rel="noopener noreferrer">
+        Seguir en Instagram
+        <svg class="i i-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+
     <footer class="footer">
       <div class="footer-brand">
-        <a href="#top" class="brand">Trackerflow</a>
+        <a href="#top" class="brand"><img src="/assets/trackerflow-logo.webp" alt="Trackerflow" width="887" height="132" loading="lazy" decoding="async"></a>
         <p>Desarrollo web y software a medida para emprendimientos y pymes en Chile.</p>
       </div>
       <div class="footer-cols">
@@ -305,6 +371,7 @@ svg.i-arrow{stroke-width:2}
           <a href="https://wa.me/56940053245?text=Hola%20Trackerflow%2C%20quiero%20conversar%20sobre%20un%20proyecto" target="_blank" rel="noopener noreferrer">WhatsApp</a>
           <a href="mailto:contacto.trackerflow@gmail.com?subject=Consulta%20para%20Trackerflow">contacto.trackerflow@gmail.com</a>
           <a href="tel:+56940053245">+56 9 4005 3245</a>
+          <a href="https://www.instagram.com/trackerflow.cl/" target="_blank" rel="noopener noreferrer">Instagram</a>
         </div>
       </div>
     </footer>
@@ -312,14 +379,15 @@ svg.i-arrow{stroke-width:2}
   </section>
 </div>
 
+<a class="wa-float" href="https://wa.me/56940053245?text=Hola%20Trackerflow%2C%20quiero%20conversar%20sobre%20un%20proyecto" target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp (se abre en una pestaña nueva)">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
 <script type="module">
 import * as THREE from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
-import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader.js';
-import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -330,7 +398,8 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 /* ---------- smooth scroll ---------- */
 if (!reduced) {
-  const lenis = new Lenis({ duration: 1.15, smoothWheel: true, touchMultiplier: 1.5 });
+  // anchors: Lenis owns the scroll, so it must also handle in-page links (#servicios, #contacto...) to animate them
+  const lenis = new Lenis({ duration: 1.15, smoothWheel: true, touchMultiplier: 1.5, anchors: true });
   const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
   requestAnimationFrame(raf);
 }
@@ -343,6 +412,14 @@ else {
     for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
   revealEls.forEach((el) => io.observe(el));
+}
+
+/* ---------- clients marquee: pause control (auto-moving content needs one, WCAG 2.2.2) ---------- */
+{
+  const marquee = document.querySelector('.marquee');
+  document.querySelector('.marquee-toggle').addEventListener('click', (e) => {
+    e.currentTarget.setAttribute('aria-pressed', marquee.classList.toggle('is-paused'));
+  });
 }
 
 /* ---------- WebGL planet ---------- */
@@ -364,7 +441,7 @@ const CONFIG = {
   starColor:'#cfe0ff', starCount:1400, starSize:1.6, starFlicker:1,
   markerColor:'#ffd27a', markerCount:60, markerSize:16, markerSpeed:0.5,
 };
-const LAYERS = { NONE:0, TORUS_SCENE:1, BLOOM_SCENE:2, ENTIRE_SCENE:3 };
+const LAYERS = { ENTIRE_SCENE:3 };
 
 const STOPS_X = [{p:0,v:0},{p:0.32,v:-3.1},{p:0.64,v:3.2},{p:1,v:0}];
 const STOPS_Y = [{p:0,v:-4.5},{p:0.32,v:0.55},{p:0.64,v:0.45},{p:1,v:0.15}];
@@ -415,11 +492,13 @@ float snoise(vec3 v){
 
 function initPlanet() {
   const canvas = document.querySelector('.planet-canvas');
-  // shortcut: pixel ratio capped at 2 so DPR-3 phones don't render 3 bloom chains at 9x pixels; lift the cap if it looks soft
-  const pr = Math.min(devicePixelRatio, 2);
+  // shortcut: pixel ratio capped at 2 so DPR-3 phones don't render at 9x pixels; lift the cap if it looks soft
+  // `let`: the frame loop lowers it when the GPU can't keep up (see adaptive resolution below)
+  let pr = Math.min(devicePixelRatio, 2);
   let W = innerWidth, H = innerHeight;
 
-  const renderer = new THREE.WebGL1Renderer({ canvas, antialias: true });
+  // no MSAA: the scene renders into composer targets (never multisampled), so canvas antialias only cost bandwidth
+  const renderer = new THREE.WebGL1Renderer({ canvas, antialias: false });
   renderer.setPixelRatio(pr);
   renderer.setSize(W, H, false);
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -431,12 +510,11 @@ function initPlanet() {
 
   const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 200);
   camera.position.set(0, 0, 8);
-  camera.layers.enable(LAYERS.TORUS_SCENE);
-  camera.layers.enable(LAYERS.BLOOM_SCENE);
-  camera.layers.enable(LAYERS.ENTIRE_SCENE);
+  camera.layers.set(LAYERS.ENTIRE_SCENE);
   scene.add(camera);
 
-  // everything visible lives on ENTIRE_SCENE (the final pass); torus/bloom layers stay empty like the source
+  // everything visible lives on ENTIRE_SCENE. The source also ran torus/bloom composers (2 full UnrealBloom chains)
+  // over layers that hold no objects, so they always produced black; removed for the same image at a fraction of the GPU cost.
   const onEntire = (o) => { o.layers.set(LAYERS.ENTIRE_SCENE); return o; };
 
   scene.add(onEntire(new THREE.AmbientLight(0xffffff, 1.8)));
@@ -444,29 +522,16 @@ function initPlanet() {
   dir.position.set(0, 10, 2);
   scene.add(dir);
 
-  /* composers */
-  const torusComposer = new EffectComposer(renderer);
-  torusComposer.renderToScreen = false;
-  torusComposer.addPass(new RenderPass(scene, camera));
-  torusComposer.addPass(new ShaderPass(GammaCorrectionShader));
-  torusComposer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.22, 0.2, 0));
-  torusComposer.addPass(new ShaderPass(CopyShader));
-
-  const bloomComposer = new EffectComposer(renderer);
-  bloomComposer.renderToScreen = false;
-  bloomComposer.addPass(new RenderPass(scene, camera));
-  bloomComposer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.5, 0.6, 0));
-  bloomComposer.addPass(new ShaderPass(GammaCorrectionShader));
-
+  /* composer */
   const FinalPass = {
     uniforms: {
-      iTime:{value:0}, tDiffuse:{value:null}, torusTexture:{value:null}, bloomTexture:{value:null}, haloTexture:{value:null},
+      iTime:{value:0}, tDiffuse:{value:null},
       uBg:{value:hexToVec3(CONFIG.bgColor)}, uFlameA:{value:hexToVec3(CONFIG.flameColor)},
       uFlameB:{value:hexToVec3(CONFIG.flameColor2)}, uFlameAmt:{value:CONFIG.flameAmt},
     },
     vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position, 1.0); }`,
     fragmentShader: `
-      uniform float iTime; uniform sampler2D tDiffuse; uniform sampler2D bloomTexture; uniform sampler2D torusTexture; uniform sampler2D haloTexture;
+      uniform float iTime; uniform sampler2D tDiffuse;
       uniform vec3 uBg; uniform vec3 uFlameA; uniform vec3 uFlameB; uniform float uFlameAmt;
       varying vec2 vUv;
       vec3 warp3d(vec3 pos, float t){ float curv=.8,a=1.9,b=0.7; pos*=2.;
@@ -481,17 +546,13 @@ function initPlanet() {
         flame *= smoothstep(0.25, 1., abs(uv.y));
         float md = smoothstep(-0.7, 1., -uv.y*uv.x); flame *= md*md;
         vec3 bg = uBg * (1.0 - 0.4 * length(uv));
-        vec3 halo = texture2D(haloTexture, vUv).xyz;
-        gl_FragColor = vec4(bg + flame*uFlameAmt + texture2D(bloomTexture, vUv).xyz + texture2D(torusTexture, vUv).xyz + texture2D(tDiffuse, vUv).xyz + halo, 1.);
+        gl_FragColor = vec4(bg + flame*uFlameAmt + texture2D(tDiffuse, vUv).xyz, 1.);
       }`,
   };
   const finalComposer = new EffectComposer(renderer);
   finalComposer.addPass(new RenderPass(scene, camera));
   const finalPass = new ShaderPass(FinalPass);
-  finalPass.uniforms.bloomTexture.value = bloomComposer.renderTarget1.texture;
-  finalPass.uniforms.torusTexture.value = torusComposer.renderTarget1.texture;
   finalComposer.addPass(finalPass);
-  const composers = [torusComposer, bloomComposer, finalComposer];
 
   const controls = new OrbitControls(camera, renderer.domElement);
   Object.assign(controls, { enableDamping: true, dampingFactor: 0.06, enablePan: false, enabled: false,
@@ -823,21 +884,44 @@ gl_FragColor.rgb += glint * waterMask * dayAmt * oceanGlint * vec3(1.0, 0.97, 0.
   }
 
   /* resize */
-  addEventListener('resize', () => {
-    W = innerWidth; H = innerHeight;
+  function applySize() {
     camera.aspect = W / H;
     camera.updateProjectionMatrix();
-    renderer.setSize(W, H, false);
-    for (const c of composers) { c.setPixelRatio(pr); c.setSize(W, H); }
+    renderer.setPixelRatio(pr); renderer.setSize(W, H, false);
+    finalComposer.setPixelRatio(pr); finalComposer.setSize(W, H);
     uRes.value.set(W * pr, H * pr);
-  });
+  }
+  addEventListener('resize', () => { W = innerWidth; H = innerHeight; applySize(); });
+
+  /* adaptive quality: a slow GPU gets a cheaper background instead of a choppy scroll.
+     Step 1 (near invisible): render the planet at fewer pixels, down to PR_MIN. Floor is 1 CSS px: below that the
+     dFdx-based terrain relief (computed per 2x2 pixel quad) turns visibly blocky when the planet is zoomed in.
+     Step 2 (last resort): .lite-fx drops the glass blur, which is recomputed every frame over this moving canvas.
+     Median, not mean, so a few load hitches (texture upload, shader compile) can't trigger it on a fast machine.
+     Only steps down (never back up) so it can't oscillate.
+     shortcut: a browser that caps rAF at 30fps (e.g. iOS Low Power Mode) also steps down; fine for a background. */
+  const PR_MIN = 1, SLOW_FRAME = 1 / 45, WINDOW = 60;
+  const win = [];
+  let lite = false;
+  function adaptQuality(raw) {
+    if (lite || raw > 0.25) return; // >250ms = tab switch, not steady load
+    win.push(raw);
+    if (win.length < WINDOW) return;
+    const median = win.sort((a, b) => a - b)[WINDOW >> 1];
+    win.length = 0;
+    if (median <= SLOW_FRAME) return;
+    if (pr > PR_MIN) { pr = Math.max(PR_MIN, pr * 0.75); applySize(); }
+    else { lite = true; document.documentElement.classList.add('lite-fx'); }
+  }
 
   /* loop */
   const clock = new THREE.Clock();
   let curP = 0, curX = STOPS_X[0].v, curY = STOPS_Y[0].v, curS = STOPS_S[0].v, spinPhase = 0;
 
   function frame() {
-    const dt = Math.min(clock.getDelta(), 0.05);
+    const raw = clock.getDelta();
+    const dt = Math.min(raw, 0.05);
+    adaptQuality(raw);
 
     const max = document.documentElement.scrollHeight - innerHeight;
     const pTarget = clamp(max > 0 ? scrollY / max : 0, 0, 1);
@@ -867,9 +951,7 @@ gl_FragColor.rgb += glint * waterMask * dayAmt * oceanGlint * vec3(1.0, 0.97, 0.
     markerTime.value += dt;
 
     controls.update();
-    camera.layers.set(LAYERS.TORUS_SCENE); torusComposer.render();
-    camera.layers.set(LAYERS.BLOOM_SCENE); bloomComposer.render();
-    camera.layers.set(LAYERS.ENTIRE_SCENE); finalComposer.render();
+    finalComposer.render();
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
