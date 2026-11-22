@@ -108,7 +108,6 @@ svg.i-arrow{stroke-width:2}
 .plan li{display:flex;gap:10px}
 .plan li svg.i{flex:none;width:18px;height:18px;margin-top:2px;stroke-width:2;color:var(--accent)}
 .plan .btn{margin-top:auto;justify-content:center}
-.plans-note{margin-top:22px;text-align:center;font-size:14px;color:var(--muted)}
 .more-link{margin-top:28px;text-align:center}
 .more-link a{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:600;color:var(--accent);text-shadow:0 1px 16px rgba(4,6,15,.9)}
 .more-link a:hover{text-decoration:underline;text-underline-offset:4px}
