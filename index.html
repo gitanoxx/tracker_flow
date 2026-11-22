@@ -36,203 +36,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet" />
-<style>
-:root{
-  --bg:#04060f; --bg-2:#060a18; --ink:#f3f6ff; --muted:#9aa6c4; --muted-2:#6b7796;
-  --line:rgba(150,175,230,.12); --line-strong:rgba(150,175,230,.22);
-  /* accent = cyan end of the logo gradient, so buttons and links speak the brand */
-  --accent:#46dff5; --accent-ink:#03161c;
-  --glass:rgba(12,18,38,.55); --glass-2:rgba(16,24,48,.65);
-  --radius:18px; --radius-lg:26px; --maxw:1180px;
-  --shadow:0 30px 80px -30px rgba(0,0,0,.75);
-  --font:'Archivo',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
-}
-/* headings use Archivo's width axis: expanded caps read "aerospace", not template */
-h1,h2,h3,.stat-value{font-stretch:116%}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-a:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
-.btn:focus-visible{border-radius:999px}
-/* Lenis */
-html.lenis,html.lenis body{height:auto}
-.lenis.lenis-smooth{scroll-behavior:auto !important}
-.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
-.lenis.lenis-stopped{overflow:hidden}
-/* staggered scroll-reveal */
-[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,.7,.2,1),transform .7s cubic-bezier(.22,.7,.2,1);transition-delay:var(--rd,0ms);will-change:opacity,transform}
-[data-reveal].in{opacity:1;transform:none}
-/* fixed WebGL planet behind everything, never grabs pointer/scroll */
-.planet-canvas{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:0;pointer-events:none}
-.page{position:relative;z-index:1}
-/* overflow-x clip: any wider child (copy halos) would widen the mobile layout viewport, zoom the page out and push the fixed WhatsApp button off-screen */
-.section{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:clamp(80px,12vw,160px) 24px;overflow-x:clip}
-.eyebrow{display:inline-block;font-size:15px;font-weight:500;color:var(--accent);margin-bottom:14px}
-.section-head{max-width:680px;margin:0 auto clamp(48px,6vw,80px);text-align:center}
-/* dark halo behind copy that floats over the planet, so bright continents never sit under body text */
-.section-head,.showcase-copy{position:relative;isolation:isolate}
-.section-head::before,.showcase-copy::before{content:"";position:absolute;inset:-12% -18%;z-index:-1;pointer-events:none;background:radial-gradient(farthest-side,rgba(4,6,15,.82) 35%,rgba(4,6,15,.5) 70%,transparent)}
-.section-head p,.showcase-copy p{color:#b9c3dc}
-.section-head p,.showcase-copy p,.steps li{text-shadow:0 1px 2px rgba(4,6,15,.9),0 0 18px rgba(4,6,15,.9)}
-.section-head h2,.showcase-copy h2,.cta-card h2{font-size:clamp(30px,4.2vw,48px);font-weight:700;line-height:1.06;letter-spacing:-.025em;text-wrap:balance;text-shadow:0 2px 40px rgba(0,0,0,.6)}
-.section-head p{margin-top:18px;color:var(--muted);font-size:18px;line-height:1.65;text-shadow:0 1px 24px rgba(0,0,0,.55)}
-/* buttons */
-.btn{display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:600;padding:13px 22px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:transform .18s ease,box-shadow .25s ease,background .2s ease,border-color .2s ease;white-space:nowrap}
-.btn svg{width:17px;height:17px}
-.btn-primary{color:var(--accent-ink);background:var(--accent);box-shadow:0 8px 24px -12px rgba(70,223,245,.6)}
-.btn-primary:hover{background:#7ae9f8;transform:translateY(-1px)}
-.btn-outline{color:var(--ink);background:rgba(8,12,28,.72);border-color:var(--line-strong);backdrop-filter:blur(10px)}
-.btn-outline:hover{background:rgba(20,28,56,.85);border-color:rgba(150,175,230,.4)}
-.btn-ghost{color:var(--ink);background:rgba(255,255,255,.05);border-color:var(--line-strong);padding:9px 18px}
-.btn-ghost:hover{background:rgba(255,255,255,.1)}
-/* icons */
-svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-svg.i-arrow{stroke-width:2}
-
-/* hero */
-.hero{min-height:100vh;display:flex;flex-direction:column;background:radial-gradient(125% 62% at 50% -10%, rgba(4,6,15,.82) 0%, rgba(4,6,15,.28) 44%, transparent 68%)}
-/* z-index: .hero-inner is shifted up with a transform and would otherwise sit on top of the nav and swallow its clicks */
-.nav{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.brand{display:inline-flex;align-items:center}
-.brand img{display:block;height:34px;width:auto}
-.nav-links{display:flex;gap:30px;font-size:14.5px;color:var(--muted)}
-.nav-links a{transition:color .2s ease}
-.nav-links a:hover{color:var(--ink)}
-.hero-inner{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;transform:translateY(-10vh)}
-.hero-title{font-size:clamp(38px,5.6vw,72px);font-weight:700;line-height:1.02;letter-spacing:-.035em;max-width:15ch;text-shadow:0 2px 50px rgba(0,0,0,.55)}
-.hero-title em{font-style:normal;color:var(--accent)}
-.hero-sub{margin-top:24px;max-width:560px;font-size:clamp(16px,2vw,19px);line-height:1.6;color:var(--muted)}
-.hero-actions{margin-top:38px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.logos{text-align:center;padding:0 24px clamp(36px,6vw,64px)}
-.logos-label{font-size:14px;color:var(--muted);text-shadow:0 1px 16px rgba(0,0,0,.8)}
-.logos-row{margin-top:12px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 0}
-.logo{font-size:17px;font-weight:600;color:var(--ink);text-shadow:0 1px 18px rgba(0,0,0,.85)}
-.logo+.logo::before{content:"/";margin:0 clamp(12px,2.4vw,24px);color:var(--muted-2);font-weight:400}
-
-/* features */
-.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.card{position:relative;padding:28px 24px 30px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);transition:border-color .25s ease,background .25s ease}
-.card:hover{border-color:rgba(70,223,245,.35);background:var(--glass-2)}
-.card-icon{display:block;color:var(--accent);margin-bottom:40px}
-.card-icon svg.i{width:30px;height:30px;stroke-width:1.5}
-.card h3{font-size:18px;font-weight:650;letter-spacing:-.01em}
-.card p{margin-top:8px;font-size:15px;line-height:1.6;color:var(--muted)}
-
-/* showcase */
-.showcase-copy{max-width:680px;margin:0 auto;text-align:center}
-.showcase-copy p{margin-top:18px;color:var(--muted);font-size:18px;line-height:1.65;text-shadow:0 1px 24px rgba(0,0,0,.55)}
-.steps{list-style:none;margin:26px auto 0;max-width:480px;text-align:left;display:grid;gap:14px}
-.steps li{font-size:15px;line-height:1.55;color:var(--muted);padding-left:16px;border-left:1px solid var(--line-strong)}
-.steps strong{display:block;color:var(--ink);font-weight:600;margin-bottom:2px}
-.steps strong span{color:var(--accent);font-variant-numeric:tabular-nums;margin-right:6px}
-.showcase-copy .btn{margin-top:32px}
-.stats-head{margin-top:clamp(72px,10vw,120px);text-align:center}
-.stats{margin-top:8px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.stat{padding:24px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px)}
-.stat-value{font-size:18px;font-weight:650;letter-spacing:-.01em;overflow-wrap:anywhere}
-.stat-label{margin-top:6px;font-size:15px;line-height:1.55;color:var(--muted)}
-
-/* plans */
-.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.plan{position:relative;display:flex;flex-direction:column;padding:32px 28px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px)}
-.plan-featured{border-color:rgba(70,223,245,.45);background:var(--glass-2)}
-.plan-tag{position:absolute;top:34px;right:28px;font-size:14px;font-weight:500;color:var(--accent)}
-.plan h3{font-size:20px;font-weight:650;letter-spacing:-.01em}
-.plan-desc{margin-top:8px;font-size:15px;line-height:1.55;color:var(--muted)}
-.plan-price{margin:28px 0 24px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
-.plan-price strong{display:block;margin-top:4px;font-size:34px;font-weight:700;font-stretch:116%;letter-spacing:-.025em;color:var(--ink)}
-.plan ul{list-style:none;display:grid;gap:12px;margin-bottom:32px;font-size:15px;line-height:1.5;color:var(--muted)}
-.plan li{display:flex;gap:10px}
-.plan li svg.i{flex:none;width:18px;height:18px;margin-top:2px;stroke-width:2;color:var(--accent)}
-.plan .btn{margin-top:auto;justify-content:center}
-.plans-note{margin-top:22px;text-align:center;font-size:14px;color:var(--muted)}
-
-/* set by the planet loop only when the GPU is still slow at minimum resolution: no blur, more opaque glass to keep text legible */
-.lite-fx{--glass:rgba(12,18,38,.82);--glass-2:rgba(16,24,48,.86)}
-.lite-fx :is(.card,.stat,.plan,.cta-card,.btn-outline){backdrop-filter:none}
-
-/* clients */
-/* marquee: two identical groups, each at least as wide as the track, so shifting by one group loops without a seam */
-.marquee{--gap:18px;display:flex;gap:var(--gap);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
-.marquee-group{list-style:none;flex-shrink:0;min-width:100%;display:flex;justify-content:space-around;gap:var(--gap);animation:marquee 30s linear infinite}
-.marquee:hover .marquee-group,.marquee.is-paused .marquee-group{animation-play-state:paused}
-@keyframes marquee{to{transform:translateX(calc(-100% - var(--gap)))}}
-/* no backdrop-filter: the mask makes .marquee a backdrop root, so blur would sample nothing */
-.client{flex:0 0 240px;display:grid;place-items:center;height:128px;padding:24px;border-radius:var(--radius);background:var(--glass-2);border:1px solid var(--line)}
-/* object-fit for <img>; inline <svg> letterboxes the same way via its default preserveAspectRatio */
-.client-logo{display:block;width:100%;height:48px;object-fit:contain}
-.client-logo-tall{height:84px}
-.marquee-toggle{display:grid;place-items:center;width:44px;height:44px;margin:22px auto 0;border-radius:50%;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line-strong);cursor:pointer;transition:color .2s ease,background .2s ease}
-.marquee-toggle:hover{color:var(--ink);background:rgba(255,255,255,.09)}
-.marquee-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.marquee-toggle svg.i{width:18px;height:18px}
-.marquee-toggle .i-play,.marquee-toggle[aria-pressed="true"] .i-pause{display:none}
-.marquee-toggle[aria-pressed="true"] .i-play{display:block}
-
-/* cta + footer */
-.cta-card{text-align:center;max-width:760px;margin:0 auto;padding:clamp(48px,7vw,80px) clamp(28px,5vw,64px);border-radius:var(--radius-lg);background:radial-gradient(120% 140% at 50% 0%, rgba(70,223,245,.12), transparent 55%), var(--glass-2);border:1px solid var(--line-strong);box-shadow:var(--shadow);backdrop-filter:blur(18px)}
-.cta-card p{margin:18px auto 34px;max-width:520px;color:var(--muted);font-size:18px;line-height:1.65}
-.cta-card .hero-actions{margin-top:0}
-.ig-card{display:flex;align-items:center;gap:22px;max-width:760px;margin:20px auto 0;padding:24px 28px;border-radius:var(--radius-lg);background:var(--glass-2);border:1px solid var(--line-strong)}
-.ig-icon{flex:none;display:grid;place-items:center;width:56px;height:56px;border-radius:16px;color:#fff;background:linear-gradient(45deg,#f58529,#dd2a7b 45%,#8134af 75%,#515bd4)}
-.ig-icon svg.i{width:28px;height:28px}
-.ig-copy{flex:1;min-width:0}
-.ig-copy .eyebrow{margin-bottom:4px}
-.ig-copy h3{font-size:20px;font-weight:700}
-.ig-copy p{margin-top:4px;font-size:15px;line-height:1.55;color:var(--muted)}
-/* floating WhatsApp: deeper than brand #25d366 so the white glyph clears 3:1 non-text contrast */
-.wa-float{position:fixed;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));z-index:50;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;color:#fff;background:#1ea952;box-shadow:0 10px 28px -6px rgba(37,211,102,.55),0 4px 12px rgba(0,0,0,.35);transition:transform .2s ease,box-shadow .2s ease}
-.wa-float:hover{transform:translateY(-3px);box-shadow:0 14px 34px -6px rgba(37,211,102,.7),0 4px 12px rgba(0,0,0,.35)}
-.wa-float:focus-visible{outline:2px solid #fff;outline-offset:3px}
-.wa-float svg{width:30px;height:30px;fill:currentColor}
-.footer{display:flex;justify-content:space-between;gap:48px;flex-wrap:wrap;margin-top:clamp(64px,9vw,110px);padding-top:48px;border-top:1px solid var(--line)}
-.footer-brand p{margin-top:12px;max-width:280px;font-size:14px;line-height:1.6;color:var(--muted)}
-.footer-cols{display:flex;gap:clamp(32px,6vw,72px);flex-wrap:wrap}
-.footer-col h4{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px}
-.footer-col a{display:block;font-size:14px;color:var(--muted);padding:4px 0;transition:color .2s ease}
-.footer-col a:hover{color:var(--ink)}
-.copyright{text-align:center;margin-top:56px;font-size:13px;color:var(--muted-2)}
-
-/* responsive */
-@media (max-width:980px){
-  .stats,.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .plans{grid-template-columns:1fr;max-width:480px;margin:0 auto}
-}
-@media (max-width:720px){
-  .nav-links{display:none}
-  .nav{padding:18px 20px}
-  .section{padding:clamp(64px,16vw,110px) 20px}
-}
-@media (max-width:560px){
-  .feature-grid,.stats{grid-template-columns:1fr}
-  .card-icon{margin-bottom:20px}
-  .logos-row{gap:6px 18px}
-  .logo+.logo::before{content:none} /* a wrapped line must not start with a slash */
-  .hero-actions{width:100%}
-  .hero-actions .btn{flex:1;justify-content:center}
-  .cta-card{padding:40px 22px}
-  .ig-card{flex-direction:column;text-align:center;padding:28px 22px}
-  .ig-card .btn{width:100%;justify-content:center}
-  .copyright{padding-bottom:64px} /* room so the floating WhatsApp button never covers the last line */
-  .marquee{--gap:12px}
-  .client{flex-basis:180px;height:100px;padding:16px}
-  .client-logo{height:38px}
-  .client-logo-tall{height:68px}
-  .footer{flex-direction:column}
-}
-@media (max-width:380px){
-  .logo{font-size:15px}
-  .brand img{height:28px}
-}
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  [data-reveal]{opacity:1;transform:none;transition:none}
-  .marquee{-webkit-mask-image:none;mask-image:none}
-  .marquee-group{animation:none;flex-wrap:wrap;justify-content:center}
-  .marquee-group[aria-hidden],.marquee-toggle{display:none}
-}
-</style>
+<link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
 <canvas class="planet-canvas" aria-hidden="true"></canvas>
@@ -246,7 +50,7 @@ svg.i-arrow{stroke-width:2}
         <a href="#servicios">Servicios</a>
         <a href="#proceso">Cómo trabajamos</a>
         <a href="#para-quien">Para quién</a>
-        <a href="#planes">Planes</a>
+        <a href="/planes">Planes</a>
         <a href="#contacto">Contacto</a>
       </div>
       <a class="btn btn-ghost" href="https://wa.me/56940053245?text=Hola%20Trackerflow%2C%20quiero%20conversar%20sobre%20un%20proyecto" target="_blank" rel="noopener noreferrer">Cotiza</a>
@@ -304,6 +108,7 @@ svg.i-arrow{stroke-width:2}
         <p>Conectamos las herramientas que ya usas: APIs, planillas, correo y pagos.</p>
       </article>
     </div>
+    <p class="more-link" data-reveal><a href="/planes">Ver planes y precios <svg class="i i-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></p>
   </section>
 
   <!-- SECTION 3 · PROCESO + PARA QUIÉN -->
@@ -330,53 +135,6 @@ svg.i-arrow{stroke-width:2}
       <div class="stat" data-reveal style="--rd:160ms"><div class="stat-value">Pequeños negocios</div><div class="stat-label">Para ordenar tu presencia y tus tareas diarias.</div></div>
       <div class="stat" data-reveal style="--rd:240ms"><div class="stat-value">Pymes</div><div class="stat-label">Para procesos más simples y conectados.</div></div>
     </div>
-  </section>
-
-  <!-- SECTION · PLANES -->
-  <!-- shortcut: prices are "$ —" placeholders and bullets are a draft; fill in with the owner's real plans before deploying -->
-  <section class="section" id="planes">
-    <div class="section-head">
-      <span class="eyebrow" data-reveal>Planes</span>
-      <h2 data-reveal style="--rd:80ms">Precios claros desde la primera conversación</h2>
-      <p data-reveal style="--rd:160ms">Elige un punto de partida. Antes de empezar te enviamos una propuesta cerrada, con entregables y plazos.</p>
-    </div>
-    <div class="plans">
-      <article class="plan" data-reveal style="--rd:0ms">
-        <h3>Landing</h3>
-        <p class="plan-desc">Una página para presentar tu negocio y recibir consultas.</p>
-        <p class="plan-price">desde <strong>$ —</strong></p>
-        <ul>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Diseño a medida, adaptado a celular</li>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Botón de WhatsApp y formulario de contacto</li>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>SEO básico para aparecer en Google</li>
-        </ul>
-        <a class="btn btn-outline" href="https://wa.me/56940053245?text=Hola%20Trackerflow%2C%20me%20interesa%20el%20plan%20Landing" target="_blank" rel="noopener noreferrer">Cotizar Landing</a>
-      </article>
-      <article class="plan plan-featured" data-reveal style="--rd:90ms">
-        <span class="plan-tag">Recomendado</span>
-        <h3>Sitio web</h3>
-        <p class="plan-desc">Un sitio completo para mostrar tus servicios y generar confianza.</p>
-        <p class="plan-price">desde <strong>$ —</strong></p>
-        <ul>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Hasta 5 secciones o páginas</li>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Todo lo del plan Landing</li>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Integración con redes sociales y Google Maps</li>
-        </ul>
-        <a class="btn btn-primary" href="https://wa.me/56940053245?text=Hola%20Trackerflow%2C%20me%20interesa%20el%20plan%20Sitio%20web" target="_blank" rel="noopener noreferrer">Cotizar Sitio web</a>
-      </article>
-      <article class="plan" data-reveal style="--rd:180ms">
-        <h3>Software a medida</h3>
-        <p class="plan-desc">Sistemas internos, paneles, automatizaciones e integraciones.</p>
-        <p class="plan-price">según alcance <strong>A cotizar</strong></p>
-        <ul>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Levantamiento de tu proceso actual</li>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Propuesta con entregables y plazos</li>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Conexión con las herramientas que ya usas</li>
-        </ul>
-        <a class="btn btn-outline" href="https://wa.me/56940053245?text=Hola%20Trackerflow%2C%20quiero%20cotizar%20un%20software%20a%20medida" target="_blank" rel="noopener noreferrer">Conversemos</a>
-      </article>
-    </div>
-    <p class="plans-note" data-reveal>Valores referenciales en pesos chilenos.</p>
   </section>
 
   <!-- SECTION · CLIENTES -->
@@ -466,6 +224,7 @@ svg.i-arrow{stroke-width:2}
           <a href="#servicios">Software a medida</a>
           <a href="#servicios">Automatización</a>
           <a href="#servicios">Integraciones</a>
+          <a href="/planes">Planes y precios</a>
         </div>
         <div class="footer-col">
           <h4>Contacto</h4>
